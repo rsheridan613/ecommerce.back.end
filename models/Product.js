@@ -38,6 +38,7 @@ Product.init(
     },
     category_id: {
       type: DataTypes.INTEGER,
+      onUpdate: "CASCADE",
       references: {
         model: "category",
         key: "id",
