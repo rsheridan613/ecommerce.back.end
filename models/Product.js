@@ -31,6 +31,7 @@ Product.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       // set default to 10
+      defaultValue: 10,
       validate: {
         isNumeric: true,
       },
