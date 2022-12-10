@@ -6,11 +6,27 @@ const { Tag, Product, ProductTag } = require("../../models");
 router.get("/", async (req, res) => {
   // find all tags
   // be sure to include its associated Product data
+  try {
+    const userData = await Tag.findAll();
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.get("/:id", async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
+  try {
+    const userData = await Tag.findByPk(req.params.id);
+    if (!userData) {
+      res.status(404).json({ message: "No tag with this id" });
+      return;
+    }
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -25,10 +41,40 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   // update a tag's name by its `id` value
+  try {
+    const userData = await User.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!userData[0]) {
+      res.status(404).json({ message: "No tag with this id" });
+      return;
+    }
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.delete("/:id", async (req, res) => {
   // delete on tag by its `id` value
+  try {
+    const userData = await Tag.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!userData) {
+      res.status(404).json({ message: "No tag with is id" });
+      return;
+    }
+
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
